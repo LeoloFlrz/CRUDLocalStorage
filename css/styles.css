@@ -1,0 +1,114 @@
+:root {
+    --bgColor: #ee7977;
+    --cardColor: #6B3636;
+    --fontColor: #6b1715;
+    --interiorCards: #EF9592;
+    --taskField: #502828;
+}
+
+html {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-size: 62.5%;
+}
+
+body {
+    font-family: sans-serif;
+    background-color: var(--bgColor);
+}
+
+ul {
+    padding: 0;
+}
+
+li {
+    list-style: none;
+    border-radius: 10px;
+    margin-top: 15px;
+    display: flex;
+    background-color: lightgray;
+}
+
+li p {
+    margin: 0;
+    padding: 15px;
+    width: 100%;
+    font-size: 16px;
+    font-weight: 500; 
+}
+
+.containerLogo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.containerLogo img {
+    width: 10rem;
+    height: 10rem;
+}
+
+.cards {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: var(--cardColor);
+    border-radius: 5px;
+}
+
+.container h1{
+    color: white;
+    font-size: 24px;
+    font-weight: 700;
+    font-family: sans-serif;
+}
+
+.search {
+    display: flex;
+    justify-content: space-evenly;
+    width: 250px;
+    height: 100%;
+    margin-left: 20px;
+}
+
+.empty {
+    color: darkslategray;
+}
+
+.empty p {
+    font-size: 16px;
+    color: white;
+}
+
+.btnDelete {
+    margin-left: auto;
+    border: none;
+    font-weight: bold;
+    padding: 5px 10px;
+    outline: none;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    width: 10%;
+    font-size: 1.2em;
+}
+
+.btnDelete:hover {
+    cursor: pointer;
+    background-color: var(--interiorCards);
+}
+
+.btnAdd {
+    padding: 5px 15px;
+    border: none; 
+    color: white;
+    background-color: var(--interiorCards);
+    border-radius: 10px;
+    font-size: 1.4em;
+    outline: none;
+}

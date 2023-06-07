@@ -2,7 +2,10 @@ const input = document.querySelector("input");
 const addBtn = document.querySelector(".btnAdd");
 const ul = document.querySelector("ul");
 const empty = document.querySelector(".empty");
-const ulComplete = document.querySelector(".containerDoneArea ul")
+const containerDone = document.querySelector(".containerDone h2")
+const ulDone = document.querySelector(".containerDoneArea ul");
+let clearBtnExists = false; 
+let clearBtn = null;
 
 addBtn.addEventListener("click", (e) => {
   e.preventDefault();
@@ -13,8 +16,8 @@ addBtn.addEventListener("click", (e) => {
     const li = document.createElement("li");
     const p = document.createElement("p");
     p.textContent = text;
-    
-    li.appendChild(addCompleteBtn())
+    localStorage.setItem("tarea", text);
+    li.appendChild(addCompleteBtn(li)); // Pasar el elemento <li> como argumento
     li.appendChild(p);
     li.appendChild(addDeleteBtn());
     ul.appendChild(li);
@@ -33,19 +36,19 @@ function addDeleteBtn() {
   deleteBtn.addEventListener("click", (e) => {
     const item = e.target.parentElement;
     ul.removeChild(item);
+    ulDone.removeChild(item)
+    localStorage.removeItem("tarea");
 
-    const items = document.querySelectorAll('li');
+    const items = document.querySelectorAll("li");
 
     if (items.length === 0) {
-        empty.style.display = "block";
+      empty.style.display = "block";
     }
   });
   return deleteBtn;
 }
 
-
-//Funcion para añadir boton de completar y al hacer click se pasa a la otra columna (en proceso)
-function addCompleteBtn() {
+function addCompleteBtn(li) {
   const completeBtn = document.createElement("button");
 
   completeBtn.textContent = "Done";
@@ -54,13 +57,46 @@ function addCompleteBtn() {
   completeBtn.addEventListener("click", (event) => {
     const item = event.target.parentElement;
     ul.removeChild(item);
-    const ulComplete = document.createElement("li")
+
+
+    const pDone = li.querySelector("p").textContent;
+    const liDone = document.createElement("li");
+    const pDoneElement = document.createElement("p");
+    pDoneElement.textContent = pDone;
+    liDone.appendChild(pDoneElement);
+    ulDone.appendChild(liDone);
+    // containerDone.appendChild(addClearBtn()) 
+    if (!clearBtnExists) {
+      containerDone.appendChild(addClearBtn());
+      clearBtnExists = true;
+    }
+
     const items = document.querySelectorAll("li");
-    items.textContent(item)
-    
+
     if (items.length === 0) {
       empty.style.display = "block";
     }
-  })
+  });
   return completeBtn;
+}
+
+
+function addClearBtn() {
+  const clearBtn = document.createElement("button");
+
+  clearBtn.textContent = "Clear";
+  clearBtn.className = "clearBtn";
+
+  clearBtn.addEventListener("click", (evento) => {
+    const doneList = document.querySelector(".containerDoneArea ul li")
+
+    while (ulDone.firstChild) {
+      ulDone.removeChild(ulDone.firstChild);
+    }
+
+    containerDone.removeChild(clearBtn)
+    clearBtnExists = false;
+
+  })
+  return clearBtn
 }

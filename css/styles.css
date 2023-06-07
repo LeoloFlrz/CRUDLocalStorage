@@ -127,8 +127,9 @@ li p {
     background: var(--cardColor);
     border-radius: 5px;
     width: 270px;
-    height: 150px;
+    height: auto; 
 }
+
 
 .containerDone h2 {
     color: white;

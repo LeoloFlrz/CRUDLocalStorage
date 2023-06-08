@@ -4,10 +4,10 @@ const ul = document.querySelector("ul");
 const empty = document.querySelector(".empty");
 const containerDone = document.querySelector(".containerDone h2")
 const ulDone = document.querySelector(".containerDoneArea ul");
+const taskInput = document.querySelector(".taskInput")
 let clearBtnExists = false; 
 let clearBtn = null;
-let arrayLocal = localStorage.getItem("tasks") ? JSON.parse(localStorage.getItem("notes")) : [];
-
+let arrayLocal = localStorage.getItem("tasks") ? JSON.parse(localStorage.getItem("tasks")) : [];
 
 addBtn.addEventListener("click", (e) => {
   e.preventDefault();
@@ -93,7 +93,7 @@ function addClearBtn() {
     while (ulDone.firstChild) {
       ulDone.removeChild(ulDone.firstChild);
     }
-
+    localStorage.clear()
     containerDone.removeChild(clearBtn)
     clearBtnExists = false;
 

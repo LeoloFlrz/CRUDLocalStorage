@@ -6,17 +6,20 @@ const containerDone = document.querySelector(".containerDone h2")
 const ulDone = document.querySelector(".containerDoneArea ul");
 let clearBtnExists = false; 
 let clearBtn = null;
+let arrayLocal = localStorage.getItem("tasks") ? JSON.parse(localStorage.getItem("notes")) : [];
+
 
 addBtn.addEventListener("click", (e) => {
   e.preventDefault();
 
-  const text = input.value;
+  const taskText = input.value;
 
-  if (text !== "") {
+  if (taskText !== "") {
     const li = document.createElement("li");
     const p = document.createElement("p");
-    p.textContent = text;
-    localStorage.setItem("tarea", text);
+    p.textContent = taskText;
+    arrayLocal.push(taskText.value)
+    localStorage.setItem("taskText", JSON.stringify(arrayLocal));
     li.appendChild(addCompleteBtn(li)); // Pasar el elemento <li> como argumento
     li.appendChild(p);
     li.appendChild(addDeleteBtn());
@@ -36,8 +39,7 @@ function addDeleteBtn() {
   deleteBtn.addEventListener("click", (e) => {
     const item = e.target.parentElement;
     ul.removeChild(item);
-    ulDone.removeChild(item)
-    localStorage.removeItem("tarea");
+    localStorage.removeItem("taskText");
 
     const items = document.querySelectorAll("li");
 
@@ -57,15 +59,13 @@ function addCompleteBtn(li) {
   completeBtn.addEventListener("click", (event) => {
     const item = event.target.parentElement;
     ul.removeChild(item);
-
-
+    
     const pDone = li.querySelector("p").textContent;
     const liDone = document.createElement("li");
     const pDoneElement = document.createElement("p");
     pDoneElement.textContent = pDone;
     liDone.appendChild(pDoneElement);
     ulDone.appendChild(liDone);
-    // containerDone.appendChild(addClearBtn()) 
     if (!clearBtnExists) {
       containerDone.appendChild(addClearBtn());
       clearBtnExists = true;

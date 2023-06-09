@@ -4,18 +4,20 @@ const ul = document.querySelector("ul");
 const empty = document.querySelector(".empty");
 const containerDone = document.querySelector(".containerDone h2")
 const ulDone = document.querySelector(".containerDoneArea ul");
+const taskInput = document.querySelector(".taskInput")
 let clearBtnExists = false; 
 let clearBtn = null;
-let localArray = [];
-let tareas = [];
 
-function addTask(text) {
- 
+addBtn.addEventListener("click", (e) => {
+  e.preventDefault();
+
+  const text = input.value;
+
+  if (text !== "") {
     const li = document.createElement("li");
     const p = document.createElement("p");
     p.textContent = text;
-    tareas.push(text);
-    localArray = localStorage.setItem("Tarea", JSON.stringify(tareas));
+    localStorage.setItem("tarea", text);
     li.appendChild(addCompleteBtn(li)); // Pasar el elemento <li> como argumento
     li.appendChild(p);
     li.appendChild(addDeleteBtn());
@@ -57,8 +59,9 @@ function addDeleteBtn() {
 
   deleteBtn.addEventListener("click", (e) => {
     const item = e.target.parentElement;
-    removeElement(tareaSeleccionada);
-    localStorage.removeItem("Tarea");
+    ul.removeChild(item);
+    ulDone.removeChild(item)
+    localStorage.removeItem("tarea");
 
     const items = document.querySelectorAll("li");
 
@@ -85,15 +88,13 @@ function addCompleteBtn(li) {
   completeBtn.addEventListener("click", (event) => {
     const item = event.target.parentElement;
     ul.removeChild(item);
-
-
+    
     const pDone = li.querySelector("p").textContent;
     const liDone = document.createElement("li");
     const pDoneElement = document.createElement("p");
     pDoneElement.textContent = pDone;
     liDone.appendChild(pDoneElement);
     ulDone.appendChild(liDone);
-    // containerDone.appendChild(addClearBtn()) 
     if (!clearBtnExists) {
       containerDone.appendChild(addClearBtn());
       clearBtnExists = true;
@@ -121,30 +122,10 @@ function addClearBtn() {
     while (ulDone.firstChild) {
       ulDone.removeChild(ulDone.firstChild);
     }
-
+    localStorage.clear()
     containerDone.removeChild(clearBtn)
     clearBtnExists = false;
 
   })
   return clearBtn
-}
-
-window.addEventListener("load", () => {
-  loadPage()
-})
-
-const loadPage = () => {
-  if (localStorage.getItem("Tarea") === null) {
-    tareas = [];
-  } else {
-    tareas = JSON.parse(localStorage.getItem("Tarea"));
-  }
-  recorrerMatriz(tareas);
-}
-
-function recorrerMatriz(tareas) {
-  tareas.forEach(element => {
-    addTarea(element);
-  });
-  
 }

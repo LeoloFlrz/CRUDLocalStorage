@@ -7,17 +7,19 @@ const ulDone = document.querySelector(".containerDoneArea ul");
 const taskInput = document.querySelector(".taskInput")
 let clearBtnExists = false; 
 let clearBtn = null;
+let arrayLocal = localStorage.getItem("tasks") ? JSON.parse(localStorage.getItem("tasks")) : [];
 
 addBtn.addEventListener("click", (e) => {
   e.preventDefault();
 
-  const text = input.value;
+  const taskText = input.value;
 
-  if (text !== "") {
+  if (taskText !== "") {
     const li = document.createElement("li");
     const p = document.createElement("p");
-    p.textContent = text;
-    localStorage.setItem("tarea", text);
+    p.textContent = taskText;
+    arrayLocal.push(taskText.value)
+    localStorage.setItem("taskText", JSON.stringify(arrayLocal));
     li.appendChild(addCompleteBtn(li)); // Pasar el elemento <li> como argumento
     li.appendChild(p);
     li.appendChild(addDeleteBtn());
@@ -25,29 +27,6 @@ addBtn.addEventListener("click", (e) => {
 
     input.value = "";
     empty.style.display = "none";
-  
-}
-
-function addTarea(text) {
- 
-  const li = document.createElement("li");
-  const p = document.createElement("p");
-  p.textContent = text;
-  li.appendChild(addCompleteBtn(li)); // Pasar el elemento <li> como argumento
-  li.appendChild(p);
-  li.appendChild(addDeleteBtn());
-  ul.appendChild(li);
-  input.value = "";
-  empty.style.display = "none";
-
-}
-
-addBtn.addEventListener("click", (e) => {
-  e.preventDefault();
-
-  const text = input.value;
-  if (text !== "") {
-    addTask(text)
   }
 });
 
@@ -60,8 +39,7 @@ function addDeleteBtn() {
   deleteBtn.addEventListener("click", (e) => {
     const item = e.target.parentElement;
     ul.removeChild(item);
-    ulDone.removeChild(item)
-    localStorage.removeItem("tarea");
+    localStorage.removeItem("taskText");
 
     const items = document.querySelectorAll("li");
 
@@ -70,13 +48,6 @@ function addDeleteBtn() {
     }
   });
   return deleteBtn;
-}
-
-function removeElement(item){
-  let tareaSeleccionada = item.target.parentElement;
-  localStorage.removeItem(tareaSeleccionada);
-  console.log(tareaSeleccionada)
-  return tareaSeleccionada;
 }
 
 function addCompleteBtn(li) {
@@ -118,7 +89,7 @@ function addClearBtn() {
 
   clearBtn.addEventListener("click", (evento) => {
     const doneList = document.querySelector(".containerDoneArea ul li")
-    localStorage.clear();
+
     while (ulDone.firstChild) {
       ulDone.removeChild(ulDone.firstChild);
     }

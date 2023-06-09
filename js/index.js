@@ -57,7 +57,7 @@ function addDeleteBtn() {
 
   deleteBtn.addEventListener("click", (e) => {
     const item = e.target.parentElement;
-    removeElement(tareaSeleccionada);
+    localArray.removeElement(tareaSeleccionada);
     localStorage.removeItem("Tarea");
 
     const items = document.querySelectorAll("li");

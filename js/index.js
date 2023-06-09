@@ -6,17 +6,16 @@ const containerDone = document.querySelector(".containerDone h2")
 const ulDone = document.querySelector(".containerDoneArea ul");
 let clearBtnExists = false; 
 let clearBtn = null;
+let localArray = [];
+let tareas = [];
 
-addBtn.addEventListener("click", (e) => {
-  e.preventDefault();
-
-  const text = input.value;
-
-  if (text !== "") {
+function addTask(text) {
+ 
     const li = document.createElement("li");
     const p = document.createElement("p");
     p.textContent = text;
-    localStorage.setItem("tarea", text);
+    tareas.push(text);
+    localArray = localStorage.setItem("Tarea", JSON.stringify(tareas));
     li.appendChild(addCompleteBtn(li)); // Pasar el elemento <li> como argumento
     li.appendChild(p);
     li.appendChild(addDeleteBtn());
@@ -24,6 +23,29 @@ addBtn.addEventListener("click", (e) => {
 
     input.value = "";
     empty.style.display = "none";
+  
+}
+
+function addTarea(text) {
+ 
+  const li = document.createElement("li");
+  const p = document.createElement("p");
+  p.textContent = text;
+  li.appendChild(addCompleteBtn(li)); // Pasar el elemento <li> como argumento
+  li.appendChild(p);
+  li.appendChild(addDeleteBtn());
+  ul.appendChild(li);
+  input.value = "";
+  empty.style.display = "none";
+
+}
+
+addBtn.addEventListener("click", (e) => {
+  e.preventDefault();
+
+  const text = input.value;
+  if (text !== "") {
+    addTask(text)
   }
 });
 
@@ -35,9 +57,8 @@ function addDeleteBtn() {
 
   deleteBtn.addEventListener("click", (e) => {
     const item = e.target.parentElement;
-    ul.removeChild(item);
-    ulDone.removeChild(item)
-    localStorage.removeItem("tarea");
+    removeElement(tareaSeleccionada);
+    localStorage.removeItem("Tarea");
 
     const items = document.querySelectorAll("li");
 
@@ -46,6 +67,13 @@ function addDeleteBtn() {
     }
   });
   return deleteBtn;
+}
+
+function removeElement(item){
+  let tareaSeleccionada = item.target.parentElement;
+  localStorage.removeItem(tareaSeleccionada);
+  console.log(tareaSeleccionada)
+  return tareaSeleccionada;
 }
 
 function addCompleteBtn(li) {
@@ -89,7 +117,7 @@ function addClearBtn() {
 
   clearBtn.addEventListener("click", (evento) => {
     const doneList = document.querySelector(".containerDoneArea ul li")
-
+    localStorage.clear();
     while (ulDone.firstChild) {
       ulDone.removeChild(ulDone.firstChild);
     }
@@ -99,4 +127,24 @@ function addClearBtn() {
 
   })
   return clearBtn
+}
+
+window.addEventListener("load", () => {
+  loadPage()
+})
+
+const loadPage = () => {
+  if (localStorage.getItem("Tarea") === null) {
+    tareas = [];
+  } else {
+    tareas = JSON.parse(localStorage.getItem("Tarea"));
+  }
+  recorrerMatriz(tareas);
+}
+
+function recorrerMatriz(tareas) {
+  tareas.forEach(element => {
+    addTarea(element);
+  });
+  
 }
